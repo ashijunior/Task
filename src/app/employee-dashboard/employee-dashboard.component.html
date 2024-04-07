@@ -1,0 +1,129 @@
+<nav class="navbar navbar-light bg-primary">
+  <div class="container-fluid">
+    <h1>Task Management</h1>
+    <div class="d-flex">
+       <button (click)="clickAddedTask()" class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Add Task</button>
+    </div>
+  </div>
+</nav>
+
+
+
+<div class="container-fluid">
+
+  <!-- Searchbar -->
+<div class="search-container">
+  <input type="text" class="search" placeholder="Search..." [(ngModel)]="searchText" (input)="applyFilter()">
+  <i class="fa fa-search search-icon"></i>
+</div>
+
+  <div class="row">
+    <div class="col-12">
+      <table class="table table-bordered mt-3 custom-table">
+        <thead>
+          <tr>
+            <th>Task#</th>
+            <th>Priority</th>
+            <th>Title</th>
+            <th>Assigned To</th>
+            <th>Status</th>
+            <th>Created on</th>
+            <th>Description</th>
+            <th style="text-align: center;">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngIf="filteredRows && filteredRows.length > 0; else noResults">
+          <tr *ngFor="let row of filteredRows | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ row.priority }}</td>
+            <td>{{ row.taskTitle }}</td>
+            <td>{{ row.assignedTo }}</td>
+            <td>{{ row.status }}</td>
+            <td>{{ row.date }}</td>
+            <td>
+              <button class="btn btn-primary mx-3" [routerLink]="['/view', row.id]">View</button>
+            </td>
+            <td style="text-align: center;">
+              <button class="btn btn-info" (click)="onEdit(row)" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</button>
+              <button class="btn btn-danger mx-3" (click)="deleteTasks(row)">Delete</button>
+            </td>
+          </tr>
+        </ng-container>
+        <ng-template #noResults>
+          <tr>
+            <td colspan="6" class="no-results-message">No data found.</td>
+          </tr>
+        </ng-template>
+        </tbody>
+      </table>
+      <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Task </h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="formValue">
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Task Title <span>*</span></label>
+            <input type="text" formControlName="taskTitle" class="form-control" id="exampleInputEmail1"aria-describedby="emailHelp">
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Description <span>*</span></label>
+            <input type="text" formControlName="description" class="form-control" id="exampleInputPassword1">
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Assign To <span>*</span></label>
+            <select class="form-control"  formControlName="assignedTo">
+                <option value="" disabled selected hidden>Select an option</option>
+                <option value="John Doe">John Doe</option>
+                <option value="David Jones">David Jones</option>
+                <option value="Emeka Ani">Emeka Ani</option>
+                <option value="Precious Eden">Precious Eden</option>
+                <option value="Adams bake">Adams bake</option>
+                <option value="Chuka Mord">Chuka Mord</option>
+              <option value="Eloka Awam">Eloka Awam</option>
+              <option value="Joba Timi">Joba Timi</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Priority <span>*</span></label>
+            <select class="form-control" formControlName="priority">
+              <option value="Normal">Normal</option>
+              <option value="High">High</option>
+              <option value="Low">Low</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Date <span>*</span></label>
+            <input type="date" class="form-control" formControlName="date" id="exampleInputPassword1">
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Status <span>*</span></label>
+            <select class="form-control" formControlName="status">
+              <option value="" disabled selected hidden>Select an option</option>
+              <option value="Pending">Pending</option>
+              <option value="Completed">Completed</option>
+              <option value="Work in Progress">Work in Progress</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="cancel" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" [disabled]="formValue.invalid"  *ngIf="showAdd" (click)="postTaskDetails()" class="btn btn-primary">Add Task</button>
+        <button type="button" *ngIf="showUpdate" (click)="updateTaskDetails()" class="btn btn-primary">Update Task</button>
+      </div>
+    </div>
+  </div>
+</div>

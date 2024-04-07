@@ -1,0 +1,50 @@
+/* 
+.custom-table {
+  width: 80%;
+} */
+
+span{
+  color: red;
+}
+
+.search-container {
+  position: absolute;
+  float: left;
+  margin-top: 2rem;
+  right: 10px;
+}
+
+
+.search {
+  height: 50px;
+  width: 300px; /* Adjust as needed */
+  border: 2px solid #ccc;
+  border-radius: 25px;
+  padding: 5px 10px;
+  font-size: 16px;
+  transition: width 0.4s ease-in-out;
+  outline: none;
+}
+
+.search:focus {
+  border-color: dodgerblue;
+}
+
+.search-icon {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  color: #888;
+  transition: color 0.4s ease-in-out;
+}
+
+.search-container:focus-within .search-icon {
+  color: dodgerblue;
+}
+
+.col-12 {
+  position: relative;
+  z-index: 1; /* Ensure the table is behind the search bar */
+  margin-top: 70px; /* Adjust to create space for the search bar */
+}

@@ -1,0 +1,33 @@
+{
+  "posts": [
+    {
+      "id": "b400",
+      "taskTitle": "Login in",
+      "priority": "Normal",
+      "date": "2024-06-06",
+      "description": "make it red",
+      "status": "Completed",
+      "assignedTo": "Emeka Ani"
+    },
+    {
+      "id": "c705",
+      "taskTitle": "ashi",
+      "priority": "Normal",
+      "date": "2024-04-07",
+      "description": "test 1",
+      "status": "Pending",
+      "assignedTo": "Precious Eden"
+    }
+  ],
+  "comments": [
+    {
+      "id": "1",
+      "body": "some comment",
+      "postId": "1"
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  },
+  "employee": []
+}
