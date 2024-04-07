@@ -17,6 +17,15 @@
       "description": "test 1",
       "status": "Pending",
       "assignedTo": "Precious Eden"
+    },
+    {
+      "id": "983d",
+      "taskTitle": "Laptop page",
+      "priority": "Low",
+      "date": "2024-04-29",
+      "description": "design a laptop page",
+      "status": "Completed",
+      "assignedTo": "David Jones"
     }
   ],
   "comments": [
