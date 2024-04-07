@@ -1,7 +1,29 @@
-/* 
-.custom-table {
-  width: 80%;
-} */
+
+.clickable-row {
+  cursor: pointer;
+}
+
+.clickable-row:hover {
+  background-color: #f0f0f0; /* Change this color as desired */
+}
+
+
+  @media screen and (max-width: 768px) {
+    .custom-table {
+      width: 10%;
+    }
+
+    .btn-group-vertical {
+      display: block;
+    }
+
+    .btn-group-vertical .btn {
+      display: block;
+      width: 10%;
+      margin-bottom: 5px;
+    }
+  }
+
 
 span{
   color: red;
@@ -48,3 +70,4 @@ span{
   z-index: 1; /* Ensure the table is behind the search bar */
   margin-top: 70px; /* Adjust to create space for the search bar */
 }
+

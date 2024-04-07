@@ -18,9 +18,9 @@ body {
   background-color: beige;
 }
 
-.card:hover {
+/* .card:hover {
   transform: translateY(-15px);
-}
+} */
 
 li {
   list-style-type: none;

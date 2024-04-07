@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { EmployeeModel } from './employee-dash board.model';
 import { ApiService } from '../shared/api.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-employee-dashboard',
@@ -14,7 +15,7 @@ export class EmployeeDashboardComponent implements OnInit {
   taskData: any[] = [];
   showAdd: boolean = false;
   showUpdate: boolean = false;
-  itemsPerPage :number=10
+  itemsPerPage :number=5
   p =1;
   filteredRows: any;
   searchText: string = '';
@@ -22,6 +23,7 @@ export class EmployeeDashboardComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private api: ApiService) {}
 
   ngOnInit(): void {
+    // Using this.formBuilder.group() to create a FormGroup instance.
     this.formValue = this.formBuilder.group({
       taskTitle: ['', Validators.required],
       description: ['', Validators.required],
@@ -36,9 +38,12 @@ export class EmployeeDashboardComponent implements OnInit {
   }
 
   clickAddedTask() {
+    //this reset the form after adding task
     this.formValue.reset();
-    this.showAdd = true;
-    this.showUpdate = false;
+        // this.showAdd = true; and this.showUpdate = false;
+    //  are used to control the visibility of UI elements in your component
+    this.showAdd = true; //this shows the 'add button'
+    this.showUpdate = false; //to hide the 'update button'
   }
 
   //to add task to the table
@@ -55,15 +60,16 @@ export class EmployeeDashboardComponent implements OnInit {
     this.api.postTask(newTask).subscribe(
       (res) => {
         console.log(res);
-        alert('Task Added Successfully');
-        let ref = document.getElementById('cancel')
-        ref?.click();
-        this.formValue.reset();
-        this.getAllTasks();
+        Swal.fire('Success', 'Task Added Successfully', 'success').then(() => {
+          let ref = document.getElementById('cancel');
+          ref?.click();
+          this.formValue.reset();
+          this.getAllTasks();
+        });
       },
       (err) => {
         console.error(err);
-        alert('Something went wrong');
+        Swal.fire('Error', 'Something went wrong', 'error');
       }
     );
   }
@@ -84,16 +90,26 @@ export class EmployeeDashboardComponent implements OnInit {
   //to delete task
   deleteTasks(row: any) {
     this.api.deleteTask(row.id).subscribe(() => {
-      alert('Task has been deleted');
-      this.getAllTasks();
+      Swal.fire({
+        title: 'Success',
+        text: 'Task has been deleted',
+        icon: 'success',
+        confirmButtonText: 'OK'
+      }).then(() => {
+        this.getAllTasks();
+      });
     });
+
   }
 
   //to edit a task
   onEdit(row: any) {
-    this.showAdd = false;
-    this.showUpdate = true;
+    // this.showAdd = false; and this.showUpdate = true;
+    //  are used to control the visibility of UI elements in your component
+    this.showAdd = false; //to hide the 'add button'
+    this.showUpdate = true; //this shows the update button
 
+    //updates the form values with the details of the task being edited.
     this.employeeModelObj.id = row.id;
     this.formValue.patchValue({
       taskTitle: row.taskTitle,
@@ -107,6 +123,7 @@ export class EmployeeDashboardComponent implements OnInit {
 
   //update button to update the edited task
   updateTaskDetails() {
+    // Create an updatedTask object that contains the updated values for the task.
     const updatedTask = {
       id: this.employeeModelObj.id,
       taskTitle: this.formValue.value.taskTitle,
@@ -116,20 +133,27 @@ export class EmployeeDashboardComponent implements OnInit {
       status: this.formValue.value.status,
       assignedTo: this.formValue.value.assignedTo
     };
-
+//  we call the updateTask() method from the API service to update task on the server
     this.api.updateTask(updatedTask, updatedTask.id).subscribe(
       () => {
-        alert('Updated Successfully');
-        let ref = document.getElementById('cancel')
-        ref?.click();
-        this.formValue.reset();
-        this.getAllTasks();
+        Swal.fire({
+          title: 'Success',
+          text: 'Updated Successfully',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        }).then(() => {
+          let ref = document.getElementById('cancel');
+          ref?.click();
+          this.formValue.reset();
+          this.getAllTasks();
+        });
       },
       (err) => {
         console.error(err);
-        alert('Update Failed. Check console for details.');
+        Swal.fire('Error', 'Update Failed. Check console for details.', 'error');
       }
     );
+
   }
 
     // Function to filter teams based on search text
@@ -137,6 +161,7 @@ applyFilter(): void {
   if (this.searchText.trim().length === 0) {
     this.filteredRows = this.taskData;
   } else {
+    // Selected table data to implement search
     this.filteredRows = this.taskData.filter((task: any) =>
       task.priority.toLowerCase().includes(this.searchText.toLowerCase()) ||
       task.taskTitle.toLowerCase().includes(this.searchText.toLowerCase()) ||

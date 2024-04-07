@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { FirstpageComponent } from './firstpage/firstpage.component';
 import { ViewComponent } from './view/view.component';
 
+
+
 const routes: Routes = [
   {
     path: '', component: FirstpageComponent

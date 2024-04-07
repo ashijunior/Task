@@ -3,7 +3,7 @@
     <h1>Task Management</h1>
     <div class="d-flex">
        <button (click)="clickAddedTask()" class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
-        Add Task</button>
+        Add New Task</button>
     </div>
   </div>
 </nav>
@@ -29,22 +29,24 @@
             <th>Assigned To</th>
             <th>Status</th>
             <th>Created on</th>
-            <th>Description</th>
+            <th>Task Description</th>
             <th style="text-align: center;">Action</th>
           </tr>
         </thead>
         <tbody>
           <ng-container *ngIf="filteredRows && filteredRows.length > 0; else noResults">
-          <tr *ngFor="let row of filteredRows | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index">
-            <td>{{ i + 1 }}</td>
-            <td>{{ row.priority }}</td>
-            <td>{{ row.taskTitle }}</td>
-            <td>{{ row.assignedTo }}</td>
-            <td>{{ row.status }}</td>
-            <td>{{ row.date }}</td>
-            <td>
-              <button class="btn btn-primary mx-3" [routerLink]="['/view', row.id]">View</button>
-            </td>
+            <tr *ngFor="let row of filteredRows | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index">
+
+              <td>{{ i + 1 + (p - 1) *itemsPerPage }}</td>
+              <td>{{ row.priority }}</td>
+              <td>{{ row.taskTitle }}</td>
+              <td>{{ row.assignedTo }}</td>
+              <td>{{ row.status }}</td>
+              <td>{{ row.date }}</td>
+              <td>
+                <button class="btn btn-primary mx-3" [routerLink]="['/view', row.id]">View</button>
+              </td>
+
             <td style="text-align: center;">
               <button class="btn btn-info" (click)="onEdit(row)" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</button>
               <button class="btn btn-danger mx-3" (click)="deleteTasks(row)">Delete</button>
@@ -84,7 +86,8 @@
           </div>
           <div class="mb-3">
             <label for="exampleInputPassword1" class="form-label">Assign To <span>*</span></label>
-            <select class="form-control"  formControlName="assignedTo">
+            <div class="input-group">
+              <select class="form-control"  formControlName="assignedTo" id="assignedTo">
                 <option value="" disabled selected hidden>Select an option</option>
                 <option value="John Doe">John Doe</option>
                 <option value="David Jones">David Jones</option>
@@ -95,6 +98,7 @@
               <option value="Eloka Awam">Eloka Awam</option>
               <option value="Joba Timi">Joba Timi</option>
             </select>
+            </div>
           </div>
           <div class="mb-3">
             <label for="exampleInputPassword1" class="form-label">Priority <span>*</span></label>
