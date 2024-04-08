@@ -1,49 +1,14 @@
 {
   "posts": [
     {
-      "id": "c705",
-      "taskTitle": "ashi",
-      "priority": "Normal",
-      "date": "2024-04-07",
-      "description": "test 1",
-      "status": "Pending",
-      "assignedTo": "Precious Eden"
-    },
-    {
-      "id": "983d",
-      "taskTitle": "Laptop page",
+      "id": "a5e8",
+      "taskTitle": "dashboard",
       "priority": "Low",
-      "date": "2024-04-29",
-      "description": "design a laptop page",
+      "date": "2024-04-09",
+      "duedate": "2024-04-24",
+      "description": "Make the font large, and it shouldn't have a blue color...",
       "status": "Completed",
       "assignedTo": "David Jones"
-    },
-    {
-      "id": "9c7e",
-      "taskTitle": "sign up page",
-      "priority": "High",
-      "date": "2024-04-26",
-      "description": "create a form",
-      "status": "Work in Progress",
-      "assignedTo": "Joba Timi"
-    },
-    {
-      "id": "34f9",
-      "taskTitle": "may",
-      "priority": "Normal",
-      "date": "2024-04-08",
-      "description": "change font to pink",
-      "status": "Pending",
-      "assignedTo": "Joba Timi"
-    },
-    {
-      "id": "8c67",
-      "taskTitle": "emmanuel@email.com",
-      "priority": "High",
-      "date": "2024-05-03",
-      "description": "get it done",
-      "status": "Work in Progress",
-      "assignedTo": "Emeka Ani"
     }
   ],
   "comments": [

@@ -109,8 +109,20 @@
             </select>
           </div>
           <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label">Date <span>*</span></label>
-            <input type="date" class="form-control" formControlName="date" id="exampleInputPassword1">
+            <label for="exampleInputPassword1" class="form-label">Start Date <span>*</span></label>
+            <input type="date" class="form-control" formControlName="date" id="exampleInputPassword1" (change)="compareDate($event, 'date')">
+            <!-- Display error message for past date if formValue is defined and has 'date' control -->
+            <div *ngIf="formValue && formValue.get('date') && formValue.get('date')?.hasError('pastDate')" class="text-danger">
+              Selected date cannot be in the past.
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">End Date <span>*</span></label>
+            <input type="date" class="form-control" formControlName="duedate" id="duedate" (change)="compareDate($event, 'duedate')">
+            <!-- Display error message for invalid due date -->
+            <div *ngIf="formValue.get('duedate')?.hasError('invalidDueDate')" class="text-danger">
+              Due date must be greater than start date.
+            </div>
           </div>
           <div class="mb-3">
             <label for="exampleInputPassword1" class="form-label">Status <span>*</span></label>
@@ -125,7 +137,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" id="cancel" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" [disabled]="formValue.invalid"  *ngIf="showAdd" (click)="postTaskDetails()" class="btn btn-primary">Add Task</button>
+        <button type="button" [disabled]="formValue.invalid || formValue.hasError('invalidDueDate')"  *ngIf="showAdd" (click)="postTaskDetails()" class="btn btn-primary">Add Task</button>
         <button type="button" *ngIf="showUpdate" (click)="updateTaskDetails()" class="btn btn-primary">Update Task</button>
       </div>
     </div>

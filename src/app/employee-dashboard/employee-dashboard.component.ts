@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { EmployeeModel } from './employee-dash board.model';
 import { ApiService } from '../shared/api.service';
 import Swal from 'sweetalert2';
@@ -29,13 +29,64 @@ export class EmployeeDashboardComponent implements OnInit {
       description: ['', Validators.required],
       assignedTo: ['', Validators.required],
       priority: ['', Validators.required],
-      date: ['', Validators.required],
+      date: ['', [Validators.required, this.validateDate]],
+      duedate: ['', [Validators.required, this.validateDueDate.bind(this, 'date')]],
       status: ['', Validators.required]
     });
 
     this.getAllTasks();
 
   }
+
+
+  // Custom validator function to check if the due date is not less than the reference date
+  validateDueDate(date: string): any {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const referenceDateControl = this.formValue.get(date);
+      if (referenceDateControl && referenceDateControl.value) {
+        const referenceDate = new Date(referenceDateControl.value);
+        const dueDate = new Date(control.value);
+        if (dueDate <= referenceDate) {
+          return { invalidDueDate: true };
+        }
+      }
+      return null;
+    };
+  }
+
+  // Custom validator function to check if the selected date is in the past
+  validateDate(control: AbstractControl): { [key: string]: any } | null {
+    const selectedDate = new Date(control.value);
+    const currentDate = new Date(); // Get the current date
+    currentDate.setHours(0, 0, 0, 0); // Set the time to midnight to include today's date
+
+    if (selectedDate < currentDate) {
+      return { pastDate: true };
+    }
+    return null;
+  }
+
+
+  // Compare Date and Due Date
+  compareDate(event: any, element: string): void {
+    const startDate = this.formValue.get('date')?.value;
+    const endDate = this.formValue.get('duedate')?.value;
+
+    if (startDate && endDate) {
+      const date1 = new Date(startDate);
+      const date2 = new Date(endDate);
+      if (date2 <= date1) {
+        this.formValue.get('duedate')?.setErrors({ invalidDueDate: true });
+        Swal.fire({
+          icon: 'error',
+          text: 'Due Date must be greater than Start Date'
+        });
+      } else {
+        this.formValue.get('duedate')?.setErrors(null);
+      }
+    }
+  }
+
 
   clickAddedTask() {
     //this reset the form after adding task
@@ -52,6 +103,7 @@ export class EmployeeDashboardComponent implements OnInit {
       taskTitle: this.formValue.value.taskTitle,
       priority: this.formValue.value.priority,
       date: this.formValue.value.date,
+      duedate: this.formValue.value.duedate,
       description: this.formValue.value.description,
       status: this.formValue.value.status,
       assignedTo: this.formValue.value.assignedTo
@@ -117,6 +169,7 @@ export class EmployeeDashboardComponent implements OnInit {
       assignedTo: row.assignedTo,
       priority: row.priority,
       date: row.date,
+      duedate:row.duedate,
       status: row.status
     });
   }
@@ -129,6 +182,7 @@ export class EmployeeDashboardComponent implements OnInit {
       taskTitle: this.formValue.value.taskTitle,
       priority: this.formValue.value.priority,
       date: this.formValue.value.date,
+      duedate: this.formValue.value.duedate,
       description: this.formValue.value.description,
       status: this.formValue.value.status,
       assignedTo: this.formValue.value.assignedTo
